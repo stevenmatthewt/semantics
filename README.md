@@ -3,6 +3,17 @@ A utility written in Golang to automatically handle Semantic Versioning in a CI 
 
 [![CircleCI](https://circleci.com/gh/stevenmatthewt/semantics/tree/master.svg?style=shield)](https://circleci.com/gh/stevenmatthewt/semantics/tree/master)
 
+## Install
+
+`go get github.com/stevenmatthewt/semantics`
+
+## Use
+
+```
+cd <your github repo>
+semantics
+```
+
 ## What it does
 
 `semantics` is a command-line interface that is intended to be used in a CI environment (or manually, if you're desperate). It automatically handles the process of creating release tags for your project. 
