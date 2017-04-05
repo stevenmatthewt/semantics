@@ -9,6 +9,8 @@ A utility written in Golang to automatically handle Semantic Versioning in a CI 
 
 ## Use
 
+First, you **must** have at least one release tag for your repo that follows Semantic Versioning. If this is a new repo. just create a release tag of `0.0.0`. Then you're ready to do the following:
+
 ```
 cd <your github repo>
 semantics

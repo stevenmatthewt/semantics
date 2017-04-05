@@ -40,7 +40,9 @@ func PushTag(t tag.Tag) (err error) {
 }
 
 func runGitDescribe() (string, error) {
-	cmd := exec.Command("git", "describe", "--abbrev=0", "--tags")
+	// The following glob(7) pattern is not perfect. It will match things like 1.4badstring.8
+	// But it narrows down the results by a good bit
+	cmd := exec.Command("git", "describe", "--abbrev=0", "--tags", "--match=[0-9]*\\.[0-9]*\\.[0-9]*")
 	return runCommand(cmd)
 }
 
