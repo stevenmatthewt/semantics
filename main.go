@@ -26,7 +26,10 @@ func main() {
 	fmt.Printf("old tag: %v.%v.%v\n", tag.Major, tag.Minor, tag.Patch)
 	commits := git.GetCommitsSinceTag(tag)
 
-	bumpMap := getBumpMap(flags)
+	bumpMap, err := bump.MapFromStrings(flags.major, flags.minor, flags.patch)
+	if err != nil {
+		log.Fatalf("One of the regexes provided did not compile: %v", err)
+	}
 	bumps := commits.ScanForBumps(bumpMap)
 	if len(bumps) == 0 {
 		log.Print("No updates to version. Aborting.")
@@ -45,28 +48,10 @@ func main() {
 }
 
 func getFlags() (flags CLIFlags) {
-	flag.StringVar(&flags.major, "major", "major", "Commit tag that indicates a Major bump should be performed.")
-	flag.StringVar(&flags.minor, "minor", "minor", "Commit tag that indicates a Minor bump should be performed.")
-	flag.StringVar(&flags.patch, "patch", "patch", "Commit tag that indicates a Patch bump should be performed.")
+	flag.StringVar(&flags.major, "major", "^major:.*", "Commit tag regex that indicates a Major bump should be performed.")
+	flag.StringVar(&flags.minor, "minor", "^minor:.*", "Commit tag regex that indicates a Minor bump should be performed.")
+	flag.StringVar(&flags.patch, "patch", "^patch:.*", "Commit tag regex that indicates a Patch bump should be performed.")
 	flag.Parse()
 
-	validateTag(flags.major)
-	validateTag(flags.minor)
-	validateTag(flags.patch)
-
 	return flags
-}
-
-func getBumpMap(flags CLIFlags) bump.Map {
-	return bump.Map{
-		Major: flags.major,
-		Minor: flags.minor,
-		Patch: flags.patch,
-	}
-}
-
-func validateTag(t string) {
-	if t == "" {
-		log.Fatal("Not a valid tag: \"\"")
-	}
 }

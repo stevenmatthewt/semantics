@@ -1,8 +1,6 @@
 package commit
 
 import (
-	"strings"
-
 	"github.com/stevenmatthewt/semantics/bump"
 )
 
@@ -21,13 +19,13 @@ type Commit struct {
 // occur in the list of commits.
 func (c Commits) ScanForBumps(bumpMap bump.Map) (bumps []bump.Bump) {
 	for _, commit := range c.Commits {
-		if strings.Index(commit.Message, bumpMap.Major+":") == 0 {
+		if bumpMap.Major.MatchString(commit.Message) {
 			bumps = append(bumps, bump.MajorBump{})
 		}
-		if strings.Index(commit.Message, bumpMap.Minor+":") == 0 {
+		if bumpMap.Minor.MatchString(commit.Message) {
 			bumps = append(bumps, bump.MinorBump{})
 		}
-		if strings.Index(commit.Message, bumpMap.Patch+":") == 0 {
+		if bumpMap.Patch.MatchString(commit.Message) {
 			bumps = append(bumps, bump.PatchBump{})
 		}
 	}
