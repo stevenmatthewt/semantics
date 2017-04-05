@@ -24,7 +24,7 @@ func GetCommitsSinceTag(t tag.Tag) commit.Commits {
 }
 
 func runGitLog(tag string) ([]string, error) {
-	cmd := exec.Command("git", "log", "--pretty=oneline", "head..."+tag)
+	cmd := exec.Command("git", "log", "--pretty=oneline", "HEAD..."+tag)
 	out, err := runCommand(cmd)
 	return strings.Split(out, "\n"), err
 }
