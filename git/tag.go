@@ -3,11 +3,11 @@ package git
 import (
 	"errors"
 	"fmt"
-	"log"
 	"os/exec"
 	"strconv"
 	"strings"
 
+	"github.com/stevenmatthewt/semantics/output"
 	"github.com/stevenmatthewt/semantics/tag"
 )
 
@@ -17,7 +17,7 @@ const invalidTagFormat = "Tag %s is not a valid format"
 func GetLatestTag() (tag.Tag, error) {
 	latestTag, err := runGitDescribe()
 	if err != nil {
-		log.Fatal(err)
+		output.Fatal(err)
 	}
 
 	return tagStringToTag(latestTag)
@@ -43,6 +43,8 @@ func runGitDescribe() (string, error) {
 	// The following glob(7) pattern is not perfect. It will match things like 1.4badstring.8
 	// But it narrows down the results by a good bit
 	cmd := exec.Command("git", "describe", "--abbrev=0", "--tags", "--match=[0-9]*\\.[0-9]*\\.[0-9]*")
+	// TODO: if we find a tag, but it's invalid (human created), we should retry and find the one previous.
+	// Probably with a `git describe <bad tag that was found>`
 	return runCommand(cmd)
 }
 

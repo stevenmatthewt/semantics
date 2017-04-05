@@ -3,6 +3,7 @@ package bump
 import (
 	"fmt"
 
+	"github.com/stevenmatthewt/semantics/output"
 	"github.com/stevenmatthewt/semantics/tag"
 )
 
@@ -23,7 +24,7 @@ type PatchBump struct{}
 
 // Bump takes a tag and increases it by on major version
 func (b MajorBump) Bump(t tag.Tag) tag.Tag {
-	fmt.Printf("Bumping tag (major): %+v\n", t)
+	output.Stdout(fmt.Sprintf("Bumping tag (major): %+v\n", t))
 	t.Major++
 	t.Minor = 0
 	t.Patch = 0
@@ -33,7 +34,7 @@ func (b MajorBump) Bump(t tag.Tag) tag.Tag {
 
 // Bump takes a tag and increases it by on minor version
 func (b MinorBump) Bump(t tag.Tag) tag.Tag {
-	fmt.Printf("Bumping tag (minor): %+v\n", t)
+	output.Stdout(fmt.Sprintf("Bumping tag (minor): %+v\n", t))
 	t.Minor++
 	t.Patch = 0
 
@@ -42,7 +43,7 @@ func (b MinorBump) Bump(t tag.Tag) tag.Tag {
 
 // Bump takes a tag and increases it by on patch version
 func (b PatchBump) Bump(t tag.Tag) tag.Tag {
-	fmt.Printf("Bumping tag (patch): %+v\n", t)
+	output.Stdout(fmt.Sprintf("Bumping tag (patch): %+v\n", t))
 	t.Patch++
 
 	return t

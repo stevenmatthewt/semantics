@@ -2,11 +2,11 @@ package git
 
 import (
 	"errors"
-	"log"
 	"os/exec"
 	"strings"
 
 	"github.com/stevenmatthewt/semantics/commit"
+	"github.com/stevenmatthewt/semantics/output"
 	"github.com/stevenmatthewt/semantics/tag"
 )
 
@@ -15,7 +15,7 @@ import (
 func GetCommitsSinceTag(t tag.Tag) commit.Commits {
 	commitArray, err := runGitLog(t.String())
 	if err != nil {
-		log.Fatal(err)
+		output.Fatal(err)
 	}
 
 	if len(commitArray) == 0 {
@@ -24,7 +24,7 @@ func GetCommitsSinceTag(t tag.Tag) commit.Commits {
 
 	commits, err := parseCommitArray(commitArray)
 	if err != nil {
-		log.Fatal(err)
+		output.Fatal(err)
 	}
 	return commits
 }
