@@ -9,13 +9,12 @@ import (
 	"github.com/stevenmatthewt/semantics/git"
 )
 
+// CLIFlags stores all flags that can be passed through the CLI
 type CLIFlags struct {
 	major string
 	minor string
 	patch string
 }
-
-type tag string
 
 func main() {
 	flags := getFlags()

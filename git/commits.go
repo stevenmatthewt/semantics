@@ -10,8 +10,10 @@ import (
 	"github.com/stevenmatthewt/semantics/tag"
 )
 
+// GetCommitsSinceTag returns a Commits object with all commits
+// since the provided tag
 func GetCommitsSinceTag(t tag.Tag) commit.Commits {
-	commitArray, err := runGitLog(t.Tag())
+	commitArray, err := runGitLog(t.String())
 	if err != nil {
 		log.Fatal(err)
 	}
