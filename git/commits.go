@@ -1,16 +1,21 @@
 package git
 
 import (
+	"errors"
 	"log"
 	"os/exec"
 	"strings"
 
+	"github.com/cbdr/semantics/commit"
 	"github.com/cbdr/semantics/tag"
 )
 
-func GetCommitsSinceTag(t tag.Tag) []string {
-	//git log --pretty=oneline head...tag
-	commits, err := runGitLog(t.Tag)
+func GetCommitsSinceTag(t tag.Tag) commit.Commits {
+	commitArray, err := runGitLog(t.Tag)
+	if err != nil {
+		log.Fatal(err)
+	}
+	commits, err := parseCommitArray(commitArray)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -21,4 +26,29 @@ func runGitLog(tag string) ([]string, error) {
 	cmd := exec.Command("git", "log", "--pretty=oneline", "head..."+tag)
 	out, err := runCommand(cmd)
 	return strings.Split(out, "\n"), err
+}
+
+func parseCommitArray(array []string) (commit.Commits, error) {
+	commits := commit.Commits{}
+	commits.Commits = make([]commit.Commit, len(array))
+	for i, line := range array {
+		com, err := parseCommitLine(line)
+		if err != nil {
+			return commit.Commits{}, err
+		}
+		commits.Commits[i] = com
+	}
+
+	return commits, nil
+}
+
+func parseCommitLine(line string) (commit.Commit, error) {
+	split := strings.SplitN(line, " ", 2)
+	if len(split) != 2 {
+		return commit.Commit{}, errors.New("Unable to parse commit messages")
+	}
+	return commit.Commit{
+		Hash:    split[0],
+		Message: split[1],
+	}, nil
 }
