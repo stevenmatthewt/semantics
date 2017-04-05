@@ -22,6 +22,21 @@ func GetLatestTag() (tag.Tag, error) {
 	return tagStringToTag(latestTag)
 }
 
+func PushTag(t tag.Tag) (err error) {
+	cmd := exec.Command("git", "tag", t.Tag())
+	_, err = runCommand(cmd)
+	if err != nil {
+		return err
+	}
+
+	cmd = exec.Command("git", "push", "origin", t.Tag())
+	_, err = runCommand(cmd)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func runGitDescribe() (string, error) {
 	cmd := exec.Command("git", "describe", "--abbrev=0", "--tags")
 	return runCommand(cmd)

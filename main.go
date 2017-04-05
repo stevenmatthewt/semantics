@@ -29,11 +29,20 @@ func main() {
 
 	bumpMap := getBumpMap(flags)
 	bumps := commits.ScanForBumps(bumpMap)
+	if len(bumps) == 0 {
+		log.Print("No updates to version. Aborting.")
+		return
+	}
 
 	for _, b := range bumps {
 		tag = b.Bump(tag)
 	}
 	fmt.Printf("new tag: %v.%v.%v\n", tag.Major, tag.Minor, tag.Patch)
+
+	err = git.PushTag(tag)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func getFlags() (flags CLIFlags) {
