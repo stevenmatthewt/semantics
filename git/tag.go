@@ -1,23 +1,53 @@
 package git
 
 import (
+	"errors"
+	"fmt"
 	"log"
 	"os/exec"
+	"strconv"
+	"strings"
 
 	"github.com/cbdr/semantics/tag"
 )
 
-func GetLatestTag() tag.Tag {
+const invalidTagFormat = "Tag %s is not a valid format"
+
+func GetLatestTag() (tag.Tag, error) {
 	latestTag, err := runGitDescribe()
 	if err != nil {
 		log.Fatal(err)
 	}
-	return tag.Tag{
-		Tag: latestTag,
-	}
+
+	return tagStringToTag(latestTag)
 }
 
 func runGitDescribe() (string, error) {
 	cmd := exec.Command("git", "describe", "--abbrev=0", "--tags")
 	return runCommand(cmd)
+}
+
+func tagStringToTag(tagString string) (tag.Tag, error) {
+	tagArray := strings.Split(tagString, ".")
+	if len(tagArray) != 3 {
+		return tag.Tag{}, errors.New("Latest fetched tag was not in proper a.b.c format")
+	}
+	major, err := strconv.Atoi(tagArray[0])
+	if err != nil {
+		return tag.Tag{}, fmt.Errorf(invalidTagFormat, tagArray[0])
+	}
+	minor, err := strconv.Atoi(tagArray[1])
+	if err != nil {
+		return tag.Tag{}, fmt.Errorf(invalidTagFormat, tagArray[1])
+	}
+	patch, err := strconv.Atoi(tagArray[2])
+	if err != nil {
+		return tag.Tag{}, fmt.Errorf(invalidTagFormat, tagArray[2])
+	}
+	return tag.Tag{
+		Tag:   tagString,
+		Major: major,
+		Minor: minor,
+		Patch: patch,
+	}, nil
 }

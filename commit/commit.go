@@ -15,18 +15,18 @@ type Commit struct {
 	Hash    string
 }
 
-func (c Commits) ScanForBumps(bumpMap bump.Map) (major int, minor int, patch int) {
+func (c Commits) ScanForBumps(bumpMap bump.Map) (bumps []bump.Bump) {
 	for _, commit := range c.Commits {
 		if strings.Index(commit.Message, bumpMap.Major+":") == 0 {
-			major++
+			bumps = append(bumps, bump.MajorBump{})
 		}
 		if strings.Index(commit.Message, bumpMap.Minor+":") == 0 {
-			minor++
+			bumps = append(bumps, bump.MinorBump{})
 		}
 		if strings.Index(commit.Message, bumpMap.Patch+":") == 0 {
-			patch++
+			bumps = append(bumps, bump.PatchBump{})
 		}
 	}
 
-	return major, minor, patch
+	return bumps
 }
