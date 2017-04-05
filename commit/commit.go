@@ -3,7 +3,7 @@ package commit
 import (
 	"strings"
 
-	"github.com/cbdr/semantics/bump"
+	"github.com/stevenmatthewt/semantics/bump"
 )
 
 type Commits struct {

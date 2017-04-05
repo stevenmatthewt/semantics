@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/cbdr/semantics/bump"
-	"github.com/cbdr/semantics/git"
+	"github.com/stevenmatthewt/semantics/bump"
+	"github.com/stevenmatthewt/semantics/git"
 )
 
 type CLIFlags struct {

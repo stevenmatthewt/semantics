@@ -6,8 +6,8 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/cbdr/semantics/commit"
-	"github.com/cbdr/semantics/tag"
+	"github.com/stevenmatthewt/semantics/commit"
+	"github.com/stevenmatthewt/semantics/tag"
 )
 
 func GetCommitsSinceTag(t tag.Tag) commit.Commits {

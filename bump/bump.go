@@ -3,7 +3,7 @@ package bump
 import (
 	"fmt"
 
-	"github.com/cbdr/semantics/tag"
+	"github.com/stevenmatthewt/semantics/tag"
 )
 
 type Bump interface {

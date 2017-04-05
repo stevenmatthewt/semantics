@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cbdr/semantics/tag"
+	"github.com/stevenmatthewt/semantics/tag"
 )
 
 const invalidTagFormat = "Tag %s is not a valid format"
