@@ -1,3 +1,5 @@
-test:
-  post:
-    - go run main.go
+deployment:
+  github:
+    branch: master
+    commands:
+      - go run main.go
