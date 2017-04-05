@@ -1,7 +1,8 @@
 package tag
 
+import "fmt"
+
 type Tag struct {
-	Tag   string
 	Major int
 	Minor int
 	Patch int
@@ -9,4 +10,8 @@ type Tag struct {
 
 type Getter interface {
 	GetLatestTag() Tag
+}
+
+func (t Tag) Tag() string {
+	return fmt.Sprintf("%d.%d.%d", t.Major, t.Minor, t.Patch)
 }

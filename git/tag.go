@@ -45,7 +45,6 @@ func tagStringToTag(tagString string) (tag.Tag, error) {
 		return tag.Tag{}, fmt.Errorf(invalidTagFormat, tagArray[2])
 	}
 	return tag.Tag{
-		Tag:   tagString,
 		Major: major,
 		Minor: minor,
 		Patch: patch,

@@ -11,10 +11,11 @@ import (
 )
 
 func GetCommitsSinceTag(t tag.Tag) commit.Commits {
-	commitArray, err := runGitLog(t.Tag)
+	commitArray, err := runGitLog(t.Tag())
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	commits, err := parseCommitArray(commitArray)
 	if err != nil {
 		log.Fatal(err)
@@ -36,7 +37,8 @@ func parseCommitArray(array []string) (commit.Commits, error) {
 		if err != nil {
 			return commit.Commits{}, err
 		}
-		commits.Commits[i] = com
+		// Subtract i to ensure the commits are in proper order
+		commits.Commits[len(commits.Commits)-i-1] = com
 	}
 
 	return commits, nil
