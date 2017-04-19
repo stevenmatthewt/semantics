@@ -23,19 +23,19 @@ func main() {
 	if flags.outputTag {
 		output.PrintToStdout = false
 	}
-	output.Stdout(fmt.Sprintf("major: %v, minor: %v, patch: %v\n", flags.major, flags.minor, flags.patch))
 
 	tag, err := git.GetLatestTag()
 	if err != nil {
 		output.Fatal(err)
 	}
-	output.Stdout(fmt.Sprintf("old tag: %v.%v.%v\n", tag.Major, tag.Minor, tag.Patch))
-	commits := git.GetCommitsSinceTag(tag)
+	output.Stdout(fmt.Sprintf("Current tag: %s\n", tag.String()))
 
 	bumpMap, err := bump.MapFromStrings(flags.major, flags.minor, flags.patch)
 	if err != nil {
 		output.Fatal(fmt.Sprintf("One of the regexes provided did not compile: %v", err))
 	}
+
+	commits := git.GetCommitsSinceTag(tag)
 	bumps := commits.ScanForBumps(bumpMap)
 	if len(bumps) == 0 {
 		output.Stdout("No updates to version. Aborting.")
@@ -45,16 +45,19 @@ func main() {
 	for _, b := range bumps {
 		tag = b.Bump(tag)
 	}
-	output.Stdout(fmt.Sprintf("new tag: %s\n", tag.String()))
+	output.Stdout(fmt.Sprintf("New tag: %s\n", tag.String()))
 	if flags.outputTag {
 		output.StdoutForce(tag.String())
 	}
 
 	if flags.dry == false {
+		resolve := output.Stdout("Attempting to push new tag to GitHub...")
 		err = git.PushTag(tag)
 		if err != nil {
+			resolve.Failure()
 			output.Fatal(err)
 		}
+		resolve.Success()
 	}
 }
 
@@ -62,8 +65,8 @@ func getFlags() (flags CLIFlags) {
 	flag.StringVar(&flags.major, "major", "^major:.*", "Commit tag regex that indicates a Major bump should be performed.")
 	flag.StringVar(&flags.minor, "minor", "^minor:.*", "Commit tag regex that indicates a Minor bump should be performed.")
 	flag.StringVar(&flags.patch, "patch", "^patch:.*", "Commit tag regex that indicates a Patch bump should be performed.")
-	flag.BoolVar(&flags.outputTag, "output-tag", false, "Print only the new tag to stdout. Usually combined with dry-run. Default: false")
-	flag.BoolVar(&flags.dry, "dry-run", false, "Don't create new tag, or push to github. Default: false")
+	flag.BoolVar(&flags.outputTag, "output-tag", false, "Print only the new tag to stdout. Usually combined with dry-run.")
+	flag.BoolVar(&flags.dry, "dry-run", false, "Don't create new tag, or push to github.")
 	flag.Parse()
 
 	return flags
