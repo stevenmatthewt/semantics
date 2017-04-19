@@ -32,13 +32,13 @@ func main() {
 
 	bumpMap, err := bump.MapFromStrings(flags.major, flags.minor, flags.patch)
 	if err != nil {
-		output.Fatal(fmt.Sprintf("One of the regexes provided did not compile: %v", err))
+		output.Fatal(fmt.Sprintf("One of the regexes provided did not compile: %v\n", err))
 	}
 
 	commits := git.GetCommitsSinceTag(tag)
 	bumps := commits.ScanForBumps(bumpMap)
 	if len(bumps) == 0 {
-		output.Stdout("No updates to version. Aborting.")
+		output.Stdout("No updates to version. Aborting.\n")
 		return
 	}
 

@@ -1,13 +1,11 @@
 package output
 
 import (
-	"log"
+	"fmt"
 	"os"
 )
 
 var PrintToStdout = true
-var stdoutLogger = log.New(os.Stdout, "", 0)
-var stderrLogger = log.New(os.Stderr, "", 0)
 
 // Resolver defines an interface for marking a previous output as
 // either failed or succeeded.
@@ -21,29 +19,30 @@ type Resolver interface {
 type resolver struct{}
 
 func (r resolver) Success() {
-	stdoutLogger.Print(" Success!")
+	fmt.Fprint(os.Stdout, " Success!\n")
 }
 
 func (r resolver) Failure() {
-	stdoutLogger.Print(" Failure!")
+	fmt.Fprint(os.Stdout, " Failure!\n")
 }
 
 func Stdout(args ...interface{}) resolver {
 	if PrintToStdout {
-		stdoutLogger.Print(args...)
+		fmt.Fprint(os.Stdout, args...)
 	}
 
 	return resolver{}
 }
 
 func StdoutForce(args ...interface{}) {
-	stdoutLogger.Print(args...)
+	fmt.Fprint(os.Stdout, args...)
 }
 
 func Stderr(args ...interface{}) {
-	stderrLogger.Print(args...)
+	fmt.Fprint(os.Stderr, args...)
 }
 
 func Fatal(args ...interface{}) {
-	stderrLogger.Fatal(args...)
+	fmt.Fprint(os.Stderr, args...)
+	os.Exit(1)
 }
