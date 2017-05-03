@@ -9,7 +9,7 @@ A utility written in Golang to automatically handle Semantic Versioning in a CI 
 
 ## Use
 
-First, you **must** have at least one release tag for your repo that follows Semantic Versioning. If this is a new repo. just create a release tag of `0.0.0`. Then you're ready to do the following:
+First, you **must** have at least one release tag for your repo that follows Semantic Versioning. If this is a new repo, just create a release tag of `0.0.0`. Then you're ready to do the following:
 
 ```
 cd <your github repo>
@@ -44,6 +44,8 @@ In order for `semantics` to work, a particular structure must be adhered to when
 - `--major=<pattern>`: use a custom regex pattern to recognize commits that should trigger a major version bump.
 - `--minor=<pattern>`: use a custom regex pattern to recognize commits that should trigger a minor version bump.
 - `--patch=<pattern>`: use a custom regex pattern to recognize commits that should trigger a patch version bump.
+- `--output-tag`: suppress all output except for what the new version will be.
+- `--dry-run`: skip the step of actually pushing the new tag to GitHub.
 
 ## FAQ
 
@@ -61,4 +63,4 @@ A: Kinda.
 
 At the moment, `semantics` only supports sending tags to GitHub automatically. We're working on NPM support, but it isn't ready at the moment.
 
-However, you can still use `semantics` to help you out with pushing tags to NPM. If you provide the `--output-only` argument, `semantics` will **not** push your tags anywhere, but will just print the new tag to stdout. You can use this in a simple script that can then push that tag to NPM.
+However, you can still use `semantics` to help you out with pushing tags to NPM. If you provide the `--output-tag` and `--dry-run` arguments, `semantics` will **not** push your tags anywhere, but will just print the new tag to stdout. You can use this in a simple script that can then push that tag to NPM.

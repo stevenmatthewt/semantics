@@ -12,7 +12,7 @@ import (
 
 // GetCommitsSinceTag returns a Commits object with all commits
 // since the provided tag
-func GetCommitsSinceTag(t tag.Tag) commit.Commits {
+func (g Git) GetCommitsSinceTag(t tag.Tag) commit.Commits {
 	commitArray, err := runGitLog(t.String())
 	if err != nil {
 		output.Fatal(err)
