@@ -9,7 +9,7 @@ A utility written in Golang to automatically handle Semantic Versioning in a CI 
 
 ## Use
 
-First, you **must** have at least one release tag for your repo that follows Semantic Versioning. If this is a new repo, just create a release tag of `0.0.0`. Then you're ready to do the following:
+First, you **must** have at least one release tag for your repo that follows Semantic Versioning. If this is a new repo, just create a release tag of `v0.0.0`. Then you're ready to do the following:
 
 ```
 cd <your github repo>
@@ -30,12 +30,12 @@ In order for `semantics` to work, a particular structure must be adhered to when
 
  - Commits beginning with `major:` will increase the release tag by one major version.
    - This will reset both the minor, and patch versions to 0.
-   - For instance, `1.4.7` would become `2.0.0`
+   - For instance, `v1.4.7` would become `v2.0.0`
  - Commits beginning with `minor:` will increase the release tag by one minor version.
    - This will reset the patch version to 0.
-   - For instance, `1.4.7` would become `1.5.0`
+   - For instance, `v1.4.7` would become `v1.5.0`
  - Commits beginning with `patch:` will increase the release tag by one patch version.
-   - For instance, `1.4.7` would become `1.4.8`
+   - For instance, `v1.4.7` would become `v1.4.8`
    
 ## Command Line Arguments
 
