@@ -14,7 +14,7 @@ import (
 const invalidTagFormat = "Tag %s is not a valid format"
 
 // GetLatestTag returns the latest tag that exists according to git
-func GetLatestTag() (tag.Tag, error) {
+func (g Git) GetLatestTag() (tag.Tag, error) {
 	latestTag, err := runGitDescribe()
 	if err != nil {
 		output.Fatal(err)
@@ -24,7 +24,7 @@ func GetLatestTag() (tag.Tag, error) {
 }
 
 // PushTag pushes the specified tag to the remote
-func PushTag(t tag.Tag) (err error) {
+func (g Git) PushTag(t tag.Tag) (err error) {
 	cmd := exec.Command("git", "tag", t.String())
 	_, err = runCommand(cmd)
 	if err != nil {

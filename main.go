@@ -5,8 +5,10 @@ import (
 	"fmt"
 
 	"github.com/stevenmatthewt/semantics/bump"
+	"github.com/stevenmatthewt/semantics/commit"
 	"github.com/stevenmatthewt/semantics/git"
 	"github.com/stevenmatthewt/semantics/output"
+	"github.com/stevenmatthewt/semantics/tag"
 )
 
 // CLIFlags stores all flags that can be passed through the CLI
@@ -18,13 +20,28 @@ type CLIFlags struct {
 	dry       bool
 }
 
+// TagGetter defines an interface for retriving tag information
+// from a repo
+type TagGetter interface {
+	GetLatestTag() (tag.Tag, error)
+	GetCommitsSinceTag(t tag.Tag) commit.Commits
+}
+
+// TagPusher defines an interface for pushing tags to a repo
+type TagPusher interface {
+	PushTag(tag.Tag) error
+}
+
 func main() {
 	flags := getFlags()
 	if flags.outputTag {
 		output.PrintToStdout = false
 	}
 
-	tag, err := git.GetLatestTag()
+	tagSource := git.Git{}
+	tagOutlet := tagSource
+
+	tag, err := tagSource.GetLatestTag()
 	if err != nil {
 		output.Fatal(err)
 	}
@@ -35,7 +52,7 @@ func main() {
 		output.Fatal(fmt.Sprintf("One of the regexes provided did not compile: %v\n", err))
 	}
 
-	commits := git.GetCommitsSinceTag(tag)
+	commits := tagSource.GetCommitsSinceTag(tag)
 	bumps := commits.ScanForBumps(bumpMap)
 	if len(bumps) == 0 {
 		output.Stdout("No updates to version. Aborting.\n")
@@ -52,7 +69,7 @@ func main() {
 
 	if flags.dry == false {
 		resolve := output.Stdout("Attempting to push new tag to GitHub...")
-		err = git.PushTag(tag)
+		err = tagOutlet.PushTag(tag)
 		if err != nil {
 			resolve.Failure()
 			output.Fatal(err)
