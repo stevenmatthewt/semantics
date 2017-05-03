@@ -14,6 +14,7 @@ This PR will bump the version by one **TODO** level.
 
 <details>
 <summary>Reviewers...</summary>
+
 ```markdown
 ### I confirm that:
 - [ ] PR addresses intended issue, with smallest scope possible
