@@ -18,7 +18,7 @@ This PR will bump the version by one **TODO** level.
 ```markdown
 ### I confirm that:
 - [ ] PR addresses intended issue, with smallest scope possible
-- [ ] Code is of acceptible quality
+- [ ] Code is of acceptable quality
 - [ ] Code is properly tested (quantity and quality)
 - [ ] Bumping **TODO** level is appropriate
 ```
