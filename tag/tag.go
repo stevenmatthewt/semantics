@@ -16,5 +16,5 @@ type Getter interface {
 
 // String returns a string representation of a Tag
 func (t Tag) String() string {
-	return fmt.Sprintf("%d.%d.%d", t.Major, t.Minor, t.Patch)
+	return fmt.Sprintf("v%d.%d.%d", t.Major, t.Minor, t.Patch)
 }
