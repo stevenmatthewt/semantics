@@ -1,17 +1,12 @@
 package git
 
 import (
-	"errors"
 	"fmt"
 	"os/exec"
-	"strconv"
-	"strings"
 
 	"github.com/stevenmatthewt/semantics/output"
 	"github.com/stevenmatthewt/semantics/tag"
 )
-
-const invalidTagFormat = "Tag %s is not a valid format"
 
 // GetLatestTag returns the latest tag that exists according to git
 func (g Git) GetLatestTag() (tag.Tag, error) {
@@ -20,7 +15,7 @@ func (g Git) GetLatestTag() (tag.Tag, error) {
 		output.Fatal(fmt.Errorf("Failed to fetch tag: %v", err))
 	}
 
-	return tagStringToTag(latestTag)
+	return tag.FromString(latestTag)
 }
 
 // PushTag pushes the specified tag to the remote
@@ -46,31 +41,4 @@ func runGitDescribe() (string, error) {
 	// TODO: if we find a tag, but it's invalid (human created), we should retry and find the one previous.
 	// Probably with a `git describe <bad tag that was found>`
 	return runCommand(cmd)
-}
-
-func tagStringToTag(tagString string) (tag.Tag, error) {
-	if len(tagString) > 0 {
-		tagString = tagString[1:]
-	}
-	tagArray := strings.Split(tagString, ".")
-	if len(tagArray) != 3 {
-		return tag.Tag{}, errors.New("Latest fetched tag was not in proper a.b.c format")
-	}
-	major, err := strconv.Atoi(tagArray[0])
-	if err != nil {
-		return tag.Tag{}, fmt.Errorf(invalidTagFormat, tagArray[0])
-	}
-	minor, err := strconv.Atoi(tagArray[1])
-	if err != nil {
-		return tag.Tag{}, fmt.Errorf(invalidTagFormat, tagArray[1])
-	}
-	patch, err := strconv.Atoi(tagArray[2])
-	if err != nil {
-		return tag.Tag{}, fmt.Errorf(invalidTagFormat, tagArray[2])
-	}
-	return tag.Tag{
-		Major: major,
-		Minor: minor,
-		Patch: patch,
-	}, nil
 }
