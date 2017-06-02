@@ -20,7 +20,7 @@ semantics
 
 `semantics` is a command-line interface that is intended to be used in a CI environment (or manually, if you're desperate). It automatically handles the process of creating release tags for your project. 
 
-`semantics` relies an a particular commit message structure (completely customizable) to determine what version to create and then automatically creates a release tag and pushes it to GitHub. These release tags comply with [Semantic Version 2.0](semver.org).
+`semantics` relies an a particular commit message structure (completely customizable) to determine what version to create and then automatically creates a release tag and pushes it to GitHub. These release tags comply with [Semantic Version 2.0](http://semver.org/).
 
 At the moment, `semantics` only supports pushing release tags to GitHub, but with a little extra work it can be used to push your release anywhere (npm, dockerhub, quay.io...)
 
