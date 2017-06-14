@@ -68,13 +68,11 @@ func main() {
 	}
 
 	if flags.dry == false {
-		resolve := output.Stdout("Attempting to push new tag to GitHub...")
+		output.Stdout("Attempting to push new tag to GitHub...")
 		err = tagOutlet.PushTag(tag)
 		if err != nil {
-			resolve.Failure()
 			output.Fatal(err)
 		}
-		resolve.Success()
 	}
 }
 
