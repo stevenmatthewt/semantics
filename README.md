@@ -16,6 +16,8 @@ cd <your github repo>
 semantics
 ```
 
+Check out the [wiki](https://github.com/stevenmatthewt/semantics/wiki) for more information on using `semantics`.
+
 ## What it does
 
 `semantics` is a command-line interface that is intended to be used in a CI environment (or manually, if you're desperate). It automatically handles the process of creating release tags for your project. 
