@@ -1,0 +1,22 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.10
+    working_directory: /go/src/github.com/stevenmatthewt/semantics
+    steps:
+      - checkout
+      - run:
+          name: Unit tests
+          command: |
+            go test -v ./...
+      - run: 
+          name: Fmt
+          command: go fmt ./...
+      - run: 
+          name: Vet
+          command: go vet ./... 
+      - add_ssh_keys
+      - run:
+          name: Update release
+          command: if [ $CIRCLE_BRANCH == "master" ]; then go run main.go; fi
